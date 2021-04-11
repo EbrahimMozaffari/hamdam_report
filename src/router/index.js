@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+// import store from "../store/index";
 import Home from "../views/Home.vue";
+const Page404 = () => import("@/views/error/Page404");
 
 Vue.use(VueRouter);
 
@@ -19,6 +21,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
+  {
+    path: "/404",
+    name: "Page404",
+    component: Page404,
+  },
+  { path: "*", redirect: "/404" },
 ];
 
 const router = new VueRouter({
