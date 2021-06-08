@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container class="text-right selector pr-16">
+    <v-container class="text-right selector">
       <h1 class="text-lg-center">selector</h1>
       <v-row class="mb-5"> </v-row>
       <v-row class="">
