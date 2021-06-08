@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import vuetify from "./plugins/vuetify";
-
+import 'pretty-checkbox/src/pretty-checkbox.scss';
 import axios from "./plugins/axios";
 //import babelPolyfill from "babel-polyfill";
 import moment from "moment-jalaali";
@@ -22,6 +22,8 @@ window.moment = moment;
 //       App,
 //   },
 // });
+
+
 
 new Vue({
   router,

@@ -22,6 +22,13 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
+    path: "/selector",
+    name: "Selector",
+
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Selector.vue"),
+  },
+  {
     path: "/404",
     name: "Page404",
     component: Page404,
@@ -30,6 +37,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
+  mode: 'history',
   routes,
 });
 
