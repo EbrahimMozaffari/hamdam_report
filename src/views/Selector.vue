@@ -107,7 +107,7 @@
       <v-row>
         <v-tooltip left>
           <template v-slot:activator="{ on }">
-            <label v-on="on" @click="JobStatusAll" for="">بیماری خاص:</label>
+            <label v-on="on" @click="JobStatusAll" for="">وضعیت شغلی :</label>
           </template>
           <ul class="toolTipIcon">
             <li><v-icon>mdi-minus-circle mdi-light</v-icon> اهمیتی ندارد</li>
