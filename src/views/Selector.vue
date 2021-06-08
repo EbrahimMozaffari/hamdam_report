@@ -212,7 +212,7 @@ export default {
       this.IncomeLevel = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
     },
     JobStatusAll() {
-      this.JobStatus = ["1", "2", "3", "4"];
+      this.JobStatus = ["0","1", "2", "3", "4"];
     },
   },
   mounted() {
