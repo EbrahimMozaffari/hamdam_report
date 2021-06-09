@@ -1,7 +1,4 @@
-export const namespaced = true;
-
-export const state = {
-   hamdamData: {
+{
     "male":{
         "count":767,
         "factors":[
@@ -64,55 +61,4 @@ export const state = {
             }
         ]
     }
-
-},
-
-};
-
-export const getters = {
-  getHamdamData(state) {
-    return state.hamdamData;
-  },
-  getTotalCount(state) {
-    return state.hamdamData.male.count + state.hamdamData.female.count;
-  },
-  getMalePercent(state) {
-    return (state.hamdamData.male.count*100)/(state.hamdamData.male.count + state.hamdamData.female.count);
-  },
-  getFemalePercent(state) {
-    return (state.hamdamData.female.count*100)/(state.hamdamData.male.count + state.hamdamData.female.count);
-  },
-
-};
-export const mutations = {
-  SET_HAMDAM_DATA(state, payload) {
-    state.hamdamData = payload;
-  },
-
-};
-
-export const actions = {
-  async fetchHamdamData({ commit }) {
-    try {
-      let data = await axios
-        .get("http://localhost:3000/male", {
-        })
-        .then((response) => {
-          console.log("SUCCESS!!", response.data);
-
-          // return response.data.file.url;
-          return response.data;
-          //funcCreate(response.data.file.url);
-        })
-        .catch(function(error) {
-          console.log("FAILURE!!", error);
-        });
-console.log("dataaa",data)
-      if (data) {
-        commit("SET_HAMDAM_DATA", data.data);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  },
-};
+}

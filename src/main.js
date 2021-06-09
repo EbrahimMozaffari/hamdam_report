@@ -4,7 +4,8 @@ import router from "./router";
 import store from "./store/index";
 import vuetify from "./plugins/vuetify";
 import 'pretty-checkbox/src/pretty-checkbox.scss';
-import axios from "./plugins/axios";
+// import axios from "./plugins/axios";
+import axios from "axios";
 //import babelPolyfill from "babel-polyfill";
 import moment from "moment-jalaali";
 
