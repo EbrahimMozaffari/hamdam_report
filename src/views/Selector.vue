@@ -2,7 +2,7 @@
   <v-main class="backTexture">
     <v-card max-width="600" class="mx-auto mt-5">
       <v-app-bar dark color="indigo">
-        <v-toolbar-title class="iranSansBold"> گزارشگیری</v-toolbar-title>
+        <v-toolbar-title class="iranSansBold"> گزارش گیری</v-toolbar-title>
 
         <v-spacer></v-spacer>
       </v-app-bar>
