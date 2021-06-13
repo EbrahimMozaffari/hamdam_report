@@ -6,6 +6,7 @@ import vuetify from "./plugins/vuetify";
 import 'pretty-checkbox/src/pretty-checkbox.scss';
 // import axios from "./plugins/axios";
 import axios from "axios";
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 //import babelPolyfill from "babel-polyfill";
 import moment from "moment-jalaali";
 
