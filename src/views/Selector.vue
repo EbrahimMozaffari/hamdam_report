@@ -8,342 +8,559 @@
         <v-spacer></v-spacer>
       </v-app-bar>
       <v-container class="px-5 selector">
-        <v-row class="mt-3">
-          <v-tooltip left>
-            <template v-slot:activator="{ on }">
-              <label v-on="on" @click="GenderAll" for="">جنسیت:</label>
-            </template>
-            <ul class="toolTipIcon">
-              <li><v-icon>mdi-human-male mdi-light</v-icon> مرد</li>
-              <li><v-icon>mdi-human-female mdi-light</v-icon> زن</li>
-            </ul>
-          </v-tooltip>
-
-          <v-checkbox
-            class="mt-0"
-            v-model="Gender"
-            color="success"
-            off-icon="mdi-human-male"
-            on-icon="mdi-human-male"
-            value="maleReportCount"
-            @change="log(Gender)"
-          >
-          </v-checkbox>
-
-          <v-checkbox
-            class="mt-0"
-            v-model="Gender"
-            color="success"
-            off-icon="mdi-human-female"
-            on-icon="mdi-human-female"
-            value="feMaleReportCount"
-            @change="log(Gender)"
-          ></v-checkbox>
-          <v-col cols="1" sm="1" md="1"> </v-col>
-          <v-col cols="1" sm="1" md="1"> </v-col>
-        </v-row>
-        <v-row>
-          <v-tooltip left>
-            <template v-slot:activator="{ on }">
-              <label v-on="on" @click="HasSpecificDiseaseAll"
-                >بیماری خاص:</label
-              >
-            </template>
-            <ul class="toolTipIcon">
-              <li><v-icon>mdi-check-circle mdi-light</v-icon> دارد</li>
-              <li><v-icon>mdi-close-circle mdi-light</v-icon> ندارد</li>
-              <li><v-icon>mdi-minus-circle mdi-light</v-icon> ثبت نشده</li>
-            </ul>
-          </v-tooltip>
-
-          <v-checkbox
-            class="mt-0"
-            v-model="HasSpecificDisease"
-            color="success"
-            off-icon="mdi-check-circle"
-            on-icon="mdi-check-circle"
-            value="trueCount"
-            @change="log(HasSpecificDisease)"
-          ></v-checkbox>
-          <v-checkbox
-            class="mt-0"
-            v-model="HasSpecificDisease"
-            color="success"
-            off-icon="mdi-close-circle"
-            on-icon="mdi-close-circle"
-            value="falseCount"
-            @change="log(HasSpecificDisease)"
-          ></v-checkbox>
-          <v-checkbox
-            class="mt-0"
-            v-model="HasSpecificDisease"
-            color="success"
-            off-icon="mdi-minus-circle"
-            on-icon="mdi-minus-circle"
-            value="nullCount"
-            @change="log(HasSpecificDisease)"
-          ></v-checkbox>
-          <span class="percent" v-if="HasSpecificDiseasePercent"
-            >{{ HasSpecificDiseasePercent }} %</span
-          >
-        </v-row>
-        <v-row>
-          <v-tooltip left>
-            <template v-slot:activator="{ on }">
-              <label v-on="on" @click="IncomeLevelAll" for=""
-                >سطح درآمد :</label
-              >
-            </template>
-            <ul class="toolTipIcon">
-              <li v-for="item in 10" :key="item">
-                <v-icon
-                  v-html="`mdi-numeric-${item}-circle mdi-light`"
-                ></v-icon>
-                {{ incomeItems[item - 1] }}
-              </li>
-            </ul>
-          </v-tooltip>
-
-          <v-checkbox
-            v-for="index in 10"
-            :key="index"
-            class="mt-0"
-            v-model="IncomeLevel"
-            color="success"
-            :off-icon="`mdi-numeric-${index}-circle`"
-            :on-icon="`mdi-numeric-${index}-circle`"
-            :value="`${incomItemsValue[index - 1]}`"
-            @change="log(IncomeLevel)"
-          ></v-checkbox>
-          <span class="percent" v-if="IncomeLevelPercent"
-            >{{ IncomeLevelPercent }} %</span
-          >
-        </v-row>
-        <v-row>
-          <v-tooltip left>
-            <template v-slot:activator="{ on }">
-              <label v-on="on" @click="JobStatusAll" for="">وضعیت شغلی :</label>
-            </template>
-            <ul class="toolTipIcon">
-              <li><v-icon>mdi-minus-circle mdi-light</v-icon> اهمیتی ندارد</li>
-              <li><v-icon>mdi-close-circle mdi-light</v-icon> بیکار</li>
-              <li><v-icon>mdi-home-circle mdi-light</v-icon> خانه دار</li>
-              <li><v-icon>mdi-account-hard-hat mdi-light</v-icon> شاغل</li>
-              <li><v-icon>mdi-hiking mdi-light</v-icon> بازنشسته</li>
-            </ul>
-          </v-tooltip>
-
-          <v-checkbox
-            class="mt-0"
-            v-model="JobStatus"
-            color="success"
-            off-icon="mdi-minus-circle"
-            on-icon="mdi-minus-circle"
-            value="notImportant"
-            @change="log(JobStatus)"
-          ></v-checkbox>
-          <v-checkbox
-            class="mt-0"
-            v-model="JobStatus"
-            color="success"
-            off-icon="mdi-close-circle"
-            on-icon="mdi-close-circle"
-            value="unemployed"
-            @change="log(JobStatus)"
-          ></v-checkbox>
-          <v-checkbox
-            class="mt-0"
-            v-model="JobStatus"
-            color="success"
-            off-icon="mdi-home-circle"
-            on-icon="mdi-home-circle"
-            value="housewife"
-            @change="log(JobStatus)"
-          ></v-checkbox>
-          <v-checkbox
-            class="mt-0"
-            v-model="JobStatus"
-            color="success"
-            off-icon="mdi-account-hard-hat"
-            on-icon="mdi-account-hard-hat"
-            value="employed"
-            @change="log(JobStatus)"
-          ></v-checkbox>
-          <v-checkbox
-            class="mt-0"
-            v-model="JobStatus"
-            color="success"
-            off-icon="mdi-hiking"
-            on-icon="mdi-hiking"
-            value="retired"
-            @change="log(JobStatus)"
-          ></v-checkbox>
-          <span class="percent" v-if="JobStatusPercent"
-            >{{ JobStatusPercent }} %</span
-          >
-          <!-- mdi-human-wheelchair -->
-        </v-row>
+        <SelectorComponent
+          v-for="(item, index) in allData"
+          :key="index"
+          class="mt-5"
+          :selectorData="item"
+          @over="setAllModelMethod"
+        />
       </v-container>
     </v-card>
   </v-main>
 </template>
 
 <script>
+import SelectorComponent from "@/views/SelectorComponent.vue";
 export default {
   name: "Selector",
   data: () => ({
     val: false,
-    status: true,
-    status2: false,
-    Gender: [],
-    HasSpecificDisease: [],
-    HasSpecificDiseasePercent: 0,
-    IncomeLevel: [],
-    IncomeLevelPercent: 0,
-    JobStatus: [],
-    JobStatusPercent: 0,
-    items: [
-      { text: "Real-Time", icon: "mdi-clock" },
-      { text: "Audience", icon: "mdi-account" },
-      { text: "Conversions", icon: "mdi-flag" },
-    ],
-    incomItemsValue:[
-      "noIncome",
-      "lessThanOneMillion",
-      "oneMillionToTwoMillion",
-      "twoMillionToFourMillion",
-      "fourMillionToEightMillion",
-      "eightMillionToTwelveMillion",
-      "twelveMillionToSixteenMillion",
-      "sixteenMillionToTwentyFiveMillion",
-      "twentyFiveMillionToFiftyMillion",
-      "moreThanFiftyMillion"
-    ],
-    incomeItems: [
-      "در حال حاظر درآمدی ندارم",
-      "کمتر از یک میلیون تومان",
-      "بیش از یک میلیون تا دو میلیون تومان",
-      "بیش از دو میلیون تا چهار میلیون تومان",
-      "بیش از چهار میلیون تا هشت میلیون تومان",
-      "بیش از هشت میلیون تا دوازده میلیون تومان",
-      "بیش از دوازده میلیون تا شانزده میلیون تومان",
-      "بیش از شانزده میلیون تا بیست و پنج میلیون تومان",
-      "بیش از بیست و پنج میلیون تا پنجاه میلیون تومان",
-      "بیش از پنجاه میلیون تومان",
-    ],
+    allData: {
+      SeminaryEducationLevelData: {
+        dataModelName: "SeminaryEducationLevel",
+        title: "سطح تحصیلات حوزوی",
+        names: [
+          "ندارد",
+          "مقدمات",
+          "سطح یک",
+          "سطح دو",
+          "سطح سه",
+          "سطح چهار",
+          "خارج",
+        ],
+        values: ["1", "2", "3", "4", "5", "6", "7"],
+        icons: [
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+          "mdi-numeric-7-circle",
+        ],
+      },
+      TurbanWearingStatusData: {
+        dataModelName: "TurbanWearingStatus",
+        title: "وضعیت معمم بودن",
+        names: ["معمم نیستم و قصد آن را ندارم", "معمم هستم یا خواهم شد"],
+        values: ["1", "2"],
+        icons: ["mdi-numeric-1-circle", "mdi-numeric-2-circle"],
+      },
+      EducationStatusData: {
+        dataModelName: "EducationStatus",
+        title: "وضعیت تحصیلی",
+        names: ["در حال تحصیل", "فارق التحصیل"],
+        values: ["1", "2"],
+        icons: ["mdi-numeric-1-circle", "mdi-numeric-2-circle"],
+      },
+      EducationalStageData: {
+        dataModelName: "EducationalStage",
+        title: "میزان تحصیلات",
+        names: [
+          "اهمیتی ندارد",
+          "ابتدایی",
+          "راهنمایی",
+          "دبیرستان",
+          "دیپلم ردی",
+          "دیپلم",
+          "پیش دانشگاهی",
+          "کاردانی",
+          "کارشناسی",
+          "کارشناسی ارشد",
+          "دکتری",
+          "فوق دکتری",
+        ],
+        values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
+        icons: [
+          "mdi-minus-circle",
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+          "mdi-numeric-7-circle",
+          "mdi-numeric-8-circle",
+          "mdi-numeric-9-circle",
+          "mdi-numeric-10-circle",
+        ],
+      },
+      UniversityOrSchoolTypeData: {
+        dataModelName: "UniversityOrSchoolType",
+        title: "نوع دانشگاه یا آموزشگاه",
+        names: [
+          "مدرسه دولتی",
+          "مدرسه خصوصی",
+          "دانشگاه دولتی",
+          "دانشگاه آزاد",
+          "دانشگاه پیام نور",
+          "دانشگاه غیر انتفاعی",
+          "دانشگاه علمی کاربردی",
+          "دانشگاه مجازی",
+          "دانشگاه فرهنگیان",
+          "سایر",
+        ],
+        values: ["1", "2", "10", "11", "12", "13", "14", "15", "16", "100"],
+        icons: [
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+          "mdi-numeric-7-circle",
+          "mdi-numeric-8-circle",
+          "mdi-numeric-9-circle",
+          "mdi-numeric-10-circle",
+        ],
+      },
+      JobStatusData: {
+        dataModelName: "JobStatus",
+        title: "وضعیت شغلی",
+        names: ["اهمیتی ندارد", "بیکار", "خانه دار", "شاغل", "بازنشسته"],
+        values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+        icons: [
+          "mdi-minus-circle",
+          "mdi-close-circle",
+          "mdi-home-circle",
+          "mdi-account-hard-hat",
+          "mdi-hiking",
+        ],
+      },
+      ContractTypeData: {
+        dataModelName: "ContractType",
+        title: "نوع قرارداد",
+        names: [
+          "وارد نشده",
+          "رسمی",
+          "قراردادی",
+          "پیمانی",
+          "آزمایشی",
+          "نیمه وقت",
+          "پروژه ای",
+          "سایر",
+        ],
+        values: ["0", "1", "2", "3", "4", "5", "6", "100"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+          "mdi-numeric-7-circle",
+        ],
+      },
+      SkinColorData: {
+        dataModelName: "SkinColor",
+        title: "رنگ پوست",
+        names: ["وارد نشده", "سفید", "گندمی", "سبزه", "سبزه تیره"],
+        values: ["0", "1", "2", "3", "4"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+        ],
+      },
+      EyeColorData: {
+        dataModelName: "EyeColor",
+        title: "رنگ پوست",
+        names: [
+          "وارد نشده",
+          "قهوه ای",
+          "مشکلی",
+          "آبی",
+          "سبز",
+          "خاکستری",
+          "عسلی",
+        ],
+        values: ["0", "1", "2", "3", "4", "5", "6"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+        ],
+      },
+      BodyWeightCategoryData: {
+        dataModelName: "BodyWeightCategory",
+        title: "تناسب اندام",
+        names: [
+          "اهمیتی ندارد",
+          "خیلی لاغر",
+          "لاغر",
+          "متناسب",
+          "چاق",
+          "خیلی چاق",
+        ],
+        values: ["0", "1", "2", "3", "4", "5"],
+        icons: [
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+        ],
+      },
+
+      ClothingTypeData: {
+        dataModelName: "ClothingType",
+        title: "نوع پوشش",
+        names: [
+          "وارد نشده",
+          "چادر",
+          "مانتو محجبه",
+          "مانتو",
+          "معمم",
+          "کت و شلوار",
+          "اسپورت",
+          "معمولی (رسمی)",
+          "محلی",
+          "سایر",
+        ],
+        values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "100"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+          "mdi-numeric-7-circle",
+          "mdi-numeric-8-circle",
+          "mdi-numeric-9-circle",
+        ],
+      },
+      ConscriptionStatusData: {
+        dataModelName: "ConscriptionStatus",
+        title: "وضعیت نظام وظیفه",
+        names: [
+          "مشمول هستم",
+          "مشمول هستم و قصد خدمت ندارم",
+          "مشمول نیستم",
+          "در حال خدمت",
+          "معافیت تحصیلی",
+          "معافیت دائم",
+          "پایان خدمت",
+        ],
+        values: ["1", "2", "3", "4", "5", "6", "7"],
+        icons: [
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+          "mdi-numeric-7-circle",
+        ],
+      },
+      HasSpecificDiseaseData: {
+        dataModelName: "HasSpecificDisease",
+        title: "بیماری خاص",
+        names: ["دارد", "ندارد", "ثبت نشده"],
+        values: ["1", "-1", "0"],
+        icons: ["mdi-check-circle", "mdi-close-circle", "mdi-minus-circle"],
+      },
+      HasDisabilityData: {
+        dataModelName: "HasDisability",
+        title: "دارای معلولیت",
+        names: ["دارد", "ندارد", "وارد نشده"],
+        values: ["1", "-1", "0"],
+        icons: ["mdi-check-circle", "mdi-close-circle", "mdi-minus-circle"],
+      },
+      SocioeconomicStatusData: {
+        dataModelName: "SocioeconomicStatus",
+        title: "وضعیت اقتصادی",
+        names: ["وارد نشده", "پایین", "متوسط", "بالا", "خیلی بالا"],
+        values: ["0", "1", "2", "3", "4"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+        ],
+      },
+      HomeOwnershipStatusData: {
+        dataModelName: "HomeOwnershipStatus",
+        title: "وضعیت محل سکونت",
+        names: [
+          "وارد نشده",
+          "خانه شخصی",
+          "آپارتمان شخصی",
+          "خانه استیجاری",
+          "آپارتمان استیجاری",
+          "خانه سازمانی",
+          "سایر",
+        ],
+        values: ["0", "1", "2", "3", "4", "5", "100"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+        ],
+      },
+      HasAPrivateHouseData: {
+        dataModelName: "HasAPrivateHouse",
+        title: "منزل شخصی",
+        names: ["دارد", "ندارد", "وارد نشده"],
+        values: ["1", "-1", "0"],
+        icons: ["mdi-check-circle", "mdi-close-circle", "mdi-minus-circle"],
+      },
+      IncomeLevelData: {
+        dataModelName: "IncomeLevel",
+        title: "سطح درآمد",
+        names: [
+          "وارد نشده",
+          "در حال حاظر درآمدی ندارم",
+          "کمتر از یک میلیون تومان",
+          "بیش از یک میلیون تا دو میلیون تومان",
+          "بیش از دو میلیون تا چهار میلیون تومان",
+          "بیش از چهار میلیون تا هشت میلیون تومان",
+          "بیش از هشت میلیون تا دوازده میلیون تومان",
+          "بیش از دوازده میلیون تا شانزده میلیون تومان",
+          "بیش از شانزده میلیون تا بیست و پنج میلیون تومان",
+          "بیش از بیست و پنج میلیون تا پنجاه میلیون تومان",
+          "بیش از پنجاه میلیون تومان",
+        ],
+        values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+          "mdi-numeric-7-circle",
+          "mdi-numeric-8-circle",
+          "mdi-numeric-9-circle",
+          "mdi-numeric-10-circle",
+        ],
+      },
+      WealthLevelData: {
+        dataModelName: "WealthLevel",
+        title: "پس انداز",
+        names: [
+          "وارد نشده",
+          "در حال حاظر دارایی قابل ارائه ای ندارم",
+          "صفر تا ده میلیون تومان",
+          "بیش از ده میلیون تا پنجاه میلیون تومان",
+          "بیش از پنجاه میلیون تا دویست میلیون تومان",
+          "بیش از دویست میلیون تا پانصد میلیون تومان",
+          "بیش از پانصد میلیون تا یک میلیارد تومان",
+          "بیش از یک میلیارد تا پنج میلیارد تومان",
+          "بیش از پنج میلیارد تومان",
+        ],
+        values: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+        icons: [
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+          "mdi-numeric-7-circle",
+          "mdi-numeric-8-circle",
+          "mdi-numeric-9-circle",
+          "mdi-numeric-10-circle",
+        ],
+      },
+      ReligiousPracticeData: {
+        dataModelName: "ReligiousPractice",
+        title: "تقید مذهبی",
+        names: [
+          "وارد نشده",
+          "بسیار مقید",
+          "مقید و متعادل",
+          "اکتفا به واجبات",
+          "انجام پاره ای از واجبات",
+          "چندان پایبند نیستم",
+        ],
+        values: ["0", "1", "2", "3", "4", "5"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+        ],
+      },
+      ListeningToMusicStatusData: {
+        dataModelName: "ListeningToMusicStatus",
+        title: "اهل گوش دادنبه موسیقی",
+        names: [
+          "وارد نشده",
+          "کاملا هست",
+          "به هیچ عنوان نیست",
+          "ممکن است گوش کند",
+        ],
+        values: ["0", "1", "2", "3"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+        ],
+      },
+      LivingAbroadTendencyData: {
+        dataModelName: "LivingAbroadTendency",
+        title: "تمایل به زندگی خارج از کشور",
+        names: [
+          "وارد نشده",
+          "کاملا متمایل هست",
+          "به هیچ عنوان تمایل ندارد",
+          "زندگی در ایران و خارج از ایران تفاوت ندارد",
+        ],
+        values: ["0", "1", "2", "3"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+        ],
+      },
+      MaritalStatusData: {
+        dataModelName: "MaritalStatus",
+        title: "وضعیت تأهل",
+        names: [
+          "وارد نشده",
+          "مجرد",
+          "نامزدی ناموفق",
+          "طلاق گرفته",
+          "همسر فوت شده",
+        ],
+        values: ["0", "1", "2", "3"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+        ],
+      },
+      LivingTogetherDurationData: {
+        dataModelName: "LivingTogetherDuration",
+        title: "مدت زمان زندگی مشترک",
+        names: [
+          "اهمیتی ندارد",
+          "کمتر از یک سال",
+          "بیش از یک سال الی سه سال",
+          "بیش از سه سال",
+        ],
+        values: ["0", "1", "2", "3"],
+        icons: [
+          "mdi-numeric-0-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+        ],
+      },
+      ReligionData: {
+        dataModelName: "Religion",
+        title: "دین/مذهب",
+        names: ["شیعه", "سنی", "مسیحی", "کلیمی", "زرتشتی", "سایر"],
+        values: ["1", "2", "3", "4", "5", "100"],
+        icons: [
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+          "mdi-numeric-3-circle",
+          "mdi-numeric-4-circle",
+          "mdi-numeric-5-circle",
+          "mdi-numeric-6-circle",
+        ],
+        Valueh: [
+          "Shia",
+          "Sunni",
+          "Christian",
+          "Jewish",
+          "Zoroastrian",
+          "Other",
+        ],
+      },
+      //////////////////////////////////////////////////////#############################################
+
+      // JobStatusData: {
+      //   dataModelName: "JobStatus",
+      //   title: "",
+      //   names: [],
+      //   values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      //   icons: [
+
+      //   ],
+      // },
+    },
+    allDataModel: {
+      SeminaryEducationLevel: [],
+      TurbanWearingStatus: [],
+      EducationStatus: [],
+      EducationalStage: [],
+      UniversityOrSchoolType: [],
+      JobStatus: [],
+      ContractType: [],
+      SkinColor: [],
+      EyeColor: [],
+      BodyWeightCategory: [],
+      ClothingType: [],
+      ConscriptionStatus: [],
+      HasSpecificDisease: [],
+      HasDisability: [],
+      SocioeconomicStatus: [],
+      HomeOwnershipStatus: [],
+      HasAPrivateHouse: [],
+      IncomeLevel: [],
+      WealthLevel: [],
+      ReligiousPractice: [],
+      ListeningToMusicStatus: [],
+      LivingAbroadTendency: [],
+      MaritalStatus: [],
+      LivingTogetherDuration: [],
+      Religion: [],
+    },
+
+    ///////////////////////////////////////////////////-----------------------------------------
   }),
   methods: {
-    log(val) {
-      if (val) {
-        console.log(val);
-      }
-
-      let data = this.$store.state.app.hamdamData;
-      let total = this.$store.getters["app/getTotalCount"];
-      let malePercent = this.$store.getters["app/getMalePercent"];
-      let femalePercent = this.$store.getters["app/getFemalePercent"];
-
-      console.log("total", total);
-      console.log(
-        "malePercent",
-        Math.round(malePercent * 100) / 100,
-        Math.round(femalePercent * 100) / 100
-      );
-      let totalSelect = 0;
-      let totalHasSpecificDisease = 0;
-      let totalIncomeLevel = 0;
-      let totalJobStatus = 0;
-      this.Gender.forEach((element) => {
-        if (element == "maleReportCount") {
-          totalSelect += data[element]["maleCount"];
-        } else {
-          totalSelect += data[element]["feMaleCount"];
-        }
-
-        let dataMaleOrFemal = element;
-        this.HasSpecificDisease.forEach((element) => {
-          // let datahasSpecific = element;
-          totalHasSpecificDisease +=data[dataMaleOrFemal]["factorsReport"]["hasSpecificDiseaseReportCount"][element];
-          // console.log(
-          //   'data[dataMaleOrFemal]["factorsReport"]',
-          //   data[dataMaleOrFemal]["factorsReport"][
-          //     "hasSpecificDiseaseReportCount"
-          //   ]["falseCount"]
-          // );
-//console.log("HasSpecificDisease",  data[dataMaleOrFemal]["factorsReport"]["hasSpecificDiseaseReportCount"][datahasSpecific]);
-
-          // let newArray = data[dataMaleOrFemal]["factorsReport"][
-          //   "hasSpecificDiseaseReportCount"
-          // ].filter((el) => {
-          //   return el[datahasSpecific] !== undefined;
-          // });
-          // console.log("HasSpecificDisease", newArray[0][datahasSpecific]);
-          // totalHasSpecificDisease += newArray[0][datahasSpecific];
-        }); //end of HasSpecificDisease
-
-        this.IncomeLevel.forEach((element) => {
-          totalIncomeLevel += data[dataMaleOrFemal]["factorsReport"]["incomeLevelReportCount"][element]
-          // let dataIncomeLevel = element;
-          // let newArray = data[dataMaleOrFemal]["factors"][1][
-          //   "IncomeLevel"
-          // ].filter((el) => {
-          //   return el[dataIncomeLevel] !== undefined;
-          // });
-          // console.log("IncomeLevel", newArray[0][dataIncomeLevel]);
-          // totalIncomeLevel += newArray[0][dataIncomeLevel];
-        }); //end of IncomeLevel
-
-        this.JobStatus.forEach((element) => {
-           totalJobStatus += data[dataMaleOrFemal]["factorsReport"]["jobStatusReportCount"][element]
-          // let dataJobStatus = element;
-          // let newArray = data[dataMaleOrFemal]["factors"][2][
-          //   "JobStatus"
-          // ].filter((el) => {
-          //   return el[dataJobStatus] !== undefined;
-          // });
-          // if (newArray !== undefined) {
-          //   console.log("totalJobStatus", newArray[0][dataJobStatus]);
-          //   totalJobStatus += newArray[0][dataJobStatus];
-          // }
-        }); //end of dataJobStatus
-
-        //console.log(data[element]['count']);
-      }); //end of Gender
-      console.log("totalSelect", totalSelect);
-      console.log("totalHasSpecificDisease", totalHasSpecificDisease);
-      console.log("totalIncomeLevel", totalIncomeLevel);
-      console.log("totalJobStatus", totalJobStatus);
-      this.HasSpecificDiseasePercent =
-        Math.round(((totalHasSpecificDisease * 100) / totalSelect) * 100) / 100;
-
-      this.IncomeLevelPercent =
-        Math.round(((totalIncomeLevel * 100) / totalSelect) * 100) / 100;
-
-      this.JobStatusPercent =
-        Math.round(((totalJobStatus * 100) / totalSelect) * 100) / 100;
+    setAllModelMethod(value) {
+      console.log("dataReceived", value);
+      this.allDataModel[value.dataModelName] = value.value;
+      this.sendData();
     },
-    GenderAll() {
-      this.Gender = ["maleReportCount", "feMaleReportCount"];
-      this.log();
-    },
-    HasSpecificDiseaseAll() {
-      this.HasSpecificDisease = ["trueCount", "nullCount", "falseCount"];
-      this.log();
-    },
-    IncomeLevelAll() {
-      this.IncomeLevel = this.incomItemsValue;
-      this.log();
-    },
-    JobStatusAll() {
-      this.JobStatus = ["notImportant", "unemployed", "housewife", "employed", "retired"];
-      this.log();
+    sendData() {
+      console.log(" this.allDataModel", this.allDataModel);
+      //dispatch sendData
     },
   },
   mounted() {
     // HAD TO ADD THIS CODE FOR IT TO WORK
     //let data = this.$store.state.app.hamdamData;
     //console.log("HamdamData", data.male);
-    this.$store.dispatch("app/fetchHamdamData");
+    //this.$store.dispatch("app/fetchHamdamData");
     // if (data.length == 0) {
     //   this.$store.dispatch("app/fetchHamdamData");
     // }
@@ -355,12 +572,15 @@ export default {
       return data;
     },
   },
-  /*
-          // data[dataMaleOrFemal]["factors"][0]["HasSpecificDisease"].forEach(element => {
-          //   console.log("HasSpecificDisease",element[datahasSpecific]);
-          // });
-         //console.log("HasSpecificDisease",data[dataMaleOrFemal]["factors"][0]["HasSpecificDisease"]);
-  */
+  watch: {
+    allDataModel: function () {
+      console.log("allDataModel", this.allDataModel);
+    },
+  },
+
+  components: {
+    SelectorComponent,
+  },
 };
 </script>
 

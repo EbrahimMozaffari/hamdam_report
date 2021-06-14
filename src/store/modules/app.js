@@ -2,6 +2,7 @@ export const namespaced = true;
 
 export const state = {
   hamdamData:{},
+  reportData :null,
 //    hamdamData: {
 //     "male":{
 //         "count":767,
@@ -85,13 +86,17 @@ export const getters = {
   getFemalePercent(state) {
     return (state.hamdamData.feMaleReportCount.feMaleCount*100)/(state.hamdamData.maleReportCount.maleCount + state.hamdamData.feMaleReportCount.feMaleCount);
   },
-
+  getReportData(state) {
+    return state.reportData;
+  },
 };
 export const mutations = {
   SET_HAMDAM_DATA(state, payload) {
     state.hamdamData = payload;
   },
-
+  SET_REPORT_DATA(state, payload) {
+    state.reportData = payload;
+  },
 };
 
 export const actions = {
@@ -102,7 +107,7 @@ export const actions = {
         .get("/api/Panel/v1/Reporting", {
           headers: {
             "Content-Type": "application/json",
-            'Authorization': `bearer eyJhbGciOiJFUzI1NiIsImtpZCI6InRuZUNrU011WkdjR19zOURXU1lqaUEiLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2MjM1MDAyMDUsImV4cCI6MTYyMzUwMzgwNSwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5pZGFsbC5wcm8iLCJhdWQiOiJoYW1kYW0tYXBpIiwiY2xpZW50X2lkIjoiaGFtZGFtLWFkbWluIiwic3ViIjoid201Zzc1eDMzdDd5ZmFqNmdtOHBjYzd2NHUiLCJhdXRoX3RpbWUiOjE2MjM0OTU2OTUsImlkcCI6ImxvY2FsIiwidXNlcm5hbWUiOiIwOTM1ODY3NTQ3OSIsImp0aSI6IkxWM2E2S2hDbDBEdGhLaVZVTUtpREEiLCJzY29wZSI6WyJwaG9uZSIsInByb2ZpbGUiLCJvcGVuaWQiLCJoYW1kYW0tYXBpLmFkbWluIl0sImFtciI6WyJwd2QiXX0.5INDR9q-MbET_P0F9QgN7hEGFpfo8N3alevGc90pX_XPg80pHugndOSc_AJbXl-XnKNS6O0ikyUWGFTLR1jL7w`
+            'Authorization': `bearer Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6InRuZUNrU011WkdjR19zOURXU1lqaUEiLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2MjM1NzMxMzksImV4cCI6MTYyMzU3NjczOSwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5pZGFsbC5wcm8iLCJhdWQiOiJoYW1kYW0tYXBpIiwiY2xpZW50X2lkIjoiaGFtZGFtLWFkbWluIiwic3ViIjoid201Zzc1eDMzdDd5ZmFqNmdtOHBjYzd2NHUiLCJhdXRoX3RpbWUiOjE2MjM0OTU2OTUsImlkcCI6ImxvY2FsIiwidXNlcm5hbWUiOiIwOTM1ODY3NTQ3OSIsImp0aSI6IkczRE1ib1ZhS1lCSHFBbzBoRUlCaVEiLCJzY29wZSI6WyJwaG9uZSIsInByb2ZpbGUiLCJvcGVuaWQiLCJoYW1kYW0tYXBpLmFkbWluIl0sImFtciI6WyJwd2QiXX0.hNdThPfuFdQ32YnDkvzPnf9GDm6MxM75HM_0o-g8cOoun2ZXYTzohSK7Zr5LHK5J0u6JGCXRApPtfLm60Cs7jA`
           }
         })
         .then((response) => {
@@ -118,6 +123,32 @@ export const actions = {
 console.log("dataaa",data)
       if (data) {
         commit("SET_HAMDAM_DATA", data);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  async sendDataReport({ commit }, payload) {
+    try {
+      var reportData = payload;
+      let data = await axios
+        .post("/api/Panel/v1/Reporting",reportData, {
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `bearer Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6InRuZUNrU011WkdjR19zOURXU1lqaUEiLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2MjM1NzMxMzksImV4cCI6MTYyMzU3NjczOSwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5pZGFsbC5wcm8iLCJhdWQiOiJoYW1kYW0tYXBpIiwiY2xpZW50X2lkIjoiaGFtZGFtLWFkbWluIiwic3ViIjoid201Zzc1eDMzdDd5ZmFqNmdtOHBjYzd2NHUiLCJhdXRoX3RpbWUiOjE2MjM0OTU2OTUsImlkcCI6ImxvY2FsIiwidXNlcm5hbWUiOiIwOTM1ODY3NTQ3OSIsImp0aSI6IkczRE1ib1ZhS1lCSHFBbzBoRUlCaVEiLCJzY29wZSI6WyJwaG9uZSIsInByb2ZpbGUiLCJvcGVuaWQiLCJoYW1kYW0tYXBpLmFkbWluIl0sImFtciI6WyJwd2QiXX0.hNdThPfuFdQ32YnDkvzPnf9GDm6MxM75HM_0o-g8cOoun2ZXYTzohSK7Zr5LHK5J0u6JGCXRApPtfLm60Cs7jA`
+          }
+        })
+        .then((response) => {
+          console.log("SUCCESS!!", response.data);
+
+          return response.data;
+        })
+        .catch(function(error) {
+          console.log("FAILURE!!", error);
+        });
+console.log("dataaa",data)
+      if (data) {
+        commit("SET_REPORT_DATA", data);
       }
     } catch (e) {
       console.log(e);
