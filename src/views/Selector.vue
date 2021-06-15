@@ -29,7 +29,7 @@
     <v-row dir="rtl" class="d-flex flex-row">
       <v-card class="mx-auto mt-5 col-6 pa-0">
         <v-app-bar dark color="indigo">
-          <v-toolbar-title class="iranSansBold"> گزارش گیری</v-toolbar-title>
+          <v-toolbar-title class="iranSansBold"> داشبورد پیشرفته آمار و تحلیل اطلاعات </v-toolbar-title>
 
           <v-spacer></v-spacer>
           <!-- <v-icon @click="$oidc.signOut()" color="red">mdi-exit-to-app</v-icon> -->

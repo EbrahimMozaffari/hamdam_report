@@ -28,10 +28,10 @@
 
     <span class="percent" v-if="allDataModel[selectorData.dataModelName]">
          <v-icon color="indigo">mdi-human-female</v-icon>
-         <span>{{femalePercent}} %</span>
+         <span v-if="femalePercent">{{femalePercent}} %</span>
          
          <v-icon color="indigo">mdi-human-male </v-icon>
-         <span>{{malePercent}} %</span>
+         <span v-if="malePercent">{{malePercent}} %</span>
       <!-- {{ allDataModel[selectorData.dataModelName] }} % -->
     </span>
   </v-row>
