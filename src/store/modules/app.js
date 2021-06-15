@@ -118,7 +118,7 @@ export const actions = {
     console.log("url",url)
       let data = await axios
         //.get(`https://dev.hamdamapi.ir/api/Panel/v1/Reporting/?${url}`)
-        .get(`/api/Panel/v1/Reporting/?${url}`)
+        .get(`https://hamdamapi.ir/api/Panel/v1/Reporting/?${url}`)
         .then((response) => {
           console.log("SUCCESS!!", response.data);
 
@@ -154,7 +154,7 @@ export const actions = {
 
       let data = await axios
         //.get(`https://dev.hamdamapi.ir/api/Panel/v1/Reporting/Factors/?factor=${payload.dataModelName}`)
-        .get(`/api/Panel/v1/Reporting/Factors/?factor=${payload.dataModelName}`)
+        .get(`https://hamdamapi.ir/api/Panel/v1/Reporting/Factors/?factor=${payload.dataModelName}`)
         .then((response) => {
           console.log("SUCCESS!! single", response.data);
 
