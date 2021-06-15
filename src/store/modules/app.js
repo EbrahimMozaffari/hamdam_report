@@ -171,31 +171,5 @@ export const actions = {
       console.log(e);
     }
   },
-  async fetchHamdamData({ commit }) {
-    try {
-      let data = await axios
-        .get("/api/Panel/v1/Reporting", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6InRuZUNrU011WkdjR19zOURXU1lqaUEiLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2MjM1NzMxMzksImV4cCI6MTYyMzU3NjczOSwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5pZGFsbC5wcm8iLCJhdWQiOiJoYW1kYW0tYXBpIiwiY2xpZW50X2lkIjoiaGFtZGFtLWFkbWluIiwic3ViIjoid201Zzc1eDMzdDd5ZmFqNmdtOHBjYzd2NHUiLCJhdXRoX3RpbWUiOjE2MjM0OTU2OTUsImlkcCI6ImxvY2FsIiwidXNlcm5hbWUiOiIwOTM1ODY3NTQ3OSIsImp0aSI6IkczRE1ib1ZhS1lCSHFBbzBoRUlCaVEiLCJzY29wZSI6WyJwaG9uZSIsInByb2ZpbGUiLCJvcGVuaWQiLCJoYW1kYW0tYXBpLmFkbWluIl0sImFtciI6WyJwd2QiXX0.hNdThPfuFdQ32YnDkvzPnf9GDm6MxM75HM_0o-g8cOoun2ZXYTzohSK7Zr5LHK5J0u6JGCXRApPtfLm60Cs7jA`,
-          },
-        })
-        .then((response) => {
-          console.log("SUCCESS!!", response.data.data);
 
-          // return response.data.file.url;
-          return response.data.data;
-          //funcCreate(response.data.file.url);
-        })
-        .catch(function (error) {
-          console.log("FAILURE!!", error);
-        });
-      console.log("dataaa", data);
-      if (data) {
-        commit("SET_HAMDAM_DATA", data);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  },
 };
