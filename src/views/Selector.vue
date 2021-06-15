@@ -1,31 +1,64 @@
 <template>
   <v-main class="backTexture">
-    <div></div>
-    <v-card max-width="600" class="mx-auto mt-5">
-      <v-app-bar dark color="indigo">
-        <v-toolbar-title class="iranSansBold"> گزارش گیری</v-toolbar-title>
+    <v-overlay :absolute="absolute" :value="myoverlay"> </v-overlay>
+    <div class="mypositon col-2">
+      <v-card class="mx-auto mt-5 pa-0">
+        <v-app-bar dark color="indigo">
+          <v-toolbar-title class="iranSansBold"> گزارش انتخابی</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+        <v-container class="px-5 selector">
+          <p>
+            <v-icon color="indigo">mdi-human-male </v-icon>
 
-        <v-spacer></v-spacer>
-      </v-app-bar>
-      <v-container class="px-5 selector">
-        <SelectorComponent
-          v-for="(item, index) in allData"
-          :key="index"
-          class="mt-5"
-          :selectorData="item"
-          @over="setAllModelMethod"
-        />
-      </v-container>
-    </v-card>
+            <span  v-if="totalMenWomen.men">
+              <span>{{totalMenWomen.men}}</span>
+              %
+            </span>
+          </p>
+          <p>
+            <v-icon color="indigo">mdi-human-female</v-icon>
+            <span v-if="totalMenWomen.women">
+              <span v-if="totalMenWomen.women">{{totalMenWomen.women}}</span>
+              %
+            </span>
+          </p>
+        </v-container>
+      </v-card>
+    </div>
+    <v-row dir="rtl" class="d-flex flex-row">
+      <v-card class="mx-auto mt-5 col-6 pa-0">
+        <v-app-bar dark color="indigo">
+          <v-toolbar-title class="iranSansBold"> گزارش گیری</v-toolbar-title>
+
+          <v-spacer></v-spacer>
+          <!-- <v-icon @click="$oidc.signOut()" color="red">mdi-exit-to-app</v-icon> -->
+        </v-app-bar>
+        <v-container class="px-5 selector">
+          <SelectorComponent
+            v-for="(item, index) in allData"
+            :key="index"
+            class="mt-5"
+            :selectorData="item"
+            @over="setAllModelMethod"
+          />
+        </v-container>
+      </v-card>
+    </v-row>
   </v-main>
 </template>
 
 <script>
 import SelectorComponent from "@/views/SelectorComponent.vue";
+import mainAuth from "../plugins/auth";
 export default {
   name: "Selector",
   data: () => ({
     val: false,
+    absolute: false,
+    overlay: true,
+    menPercent: null,
+    womenPercent: null,
     allData: {
       SeminaryEducationLevelData: {
         dataModelName: "SeminaryEducationLevel",
@@ -130,7 +163,7 @@ export default {
         dataModelName: "JobStatus",
         title: "وضعیت شغلی",
         names: ["اهمیتی ندارد", "بیکار", "خانه دار", "شاغل", "بازنشسته"],
-        values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+        values: ["0", "1", "2", "3", "4"],
         icons: [
           "mdi-minus-circle",
           "mdi-close-circle",
@@ -547,13 +580,21 @@ export default {
   }),
   methods: {
     setAllModelMethod(value) {
-      console.log("dataReceived", value);
+      // console.log("dataReceived", value);
       this.allDataModel[value.dataModelName] = value.value;
       this.sendData();
+      // debounce( ()=> {
+      //     console.log("debounce");
+      //     mysend()
+      //   }, 300);
+      //   function mysend(){
+      //     console.log(" this.allDataModel", this.allDataModel);
+      //   }
     },
     sendData() {
       console.log(" this.allDataModel", this.allDataModel);
       //dispatch sendData
+      this.$store.dispatch("app/sendDataReport", this.allDataModel);
     },
   },
   mounted() {
@@ -571,13 +612,42 @@ export default {
       console.log("data", data);
       return data;
     },
+    totalMenWomen() {
+      let data = this.$store.getters["app/getTotalMenWomen"];
+      let womenPercent=0;
+      let menPercent=0 ;
+      if(data){
+         menPercent =
+        Math.round(
+          ((data.totalmen.maleCount * 100) /
+            data.totalmen.totalFullCount) *
+            100
+        ) / 100;
+       womenPercent =
+        Math.round(
+          ((data.totalmen.feMaleCount * 100) /
+            data.totalmen.totalFullCount) *
+            100
+        ) / 100;
+      }
+      
+      return { men: menPercent,women:womenPercent };
+      // if (data != undefined) {
+      //   console.log('getter',data)
+      //   if (data.data != undefined) {
+      //     return data;
+      //   }
+      // }
+    },
+    myoverlay() {
+      return this.$store.getters["app/getOverlay"];
+    },
   },
   watch: {
     allDataModel: function () {
       console.log("allDataModel", this.allDataModel);
     },
   },
-
   components: {
     SelectorComponent,
   },
@@ -606,6 +676,18 @@ export default {
 .selector .percent {
   line-height: 2;
   margin-right: 10px;
+}
+.mypositon {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+}
+@media screen and (max-width: 991px) {
+  .mypositon {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+  }
 }
 //  @import '~pretty-checkbox/src/pretty-checkbox.scss';
 </style>
