@@ -1,7 +1,7 @@
 <template>
   <v-main class="backTexture">
     <v-overlay :absolute="absolute" :value="myoverlay"> </v-overlay>
-    <div class="mypositon col-2 pl-0" dir="rtl">
+    <div class="mypositon col-2" dir="rtl">
       <v-card class="mx-auto pa-0">
         <v-app-bar dark color="indigo">
           <v-toolbar-title class="iranSansBold"> گزارش انتخابی</v-toolbar-title>
@@ -11,8 +11,8 @@
           <p>
             <v-icon color="indigo">mdi-human-male </v-icon>
 
-            <span v-if="totalMenWomen.men" class="iranSansBold boy">
-              <span>{{ totalMenWomen.men }}</span>
+            <span v-if="totalMenPercent" class="iranSansBold boy">
+              <span>{{ totalMenPercent }}</span>
               %
             </span>
             <span v-if="maleCount" class="iranSansBold boy mr-1">
@@ -21,8 +21,8 @@
           </p>
           <p>
             <v-icon color="indigo">mdi-human-female</v-icon>
-            <span v-if="totalMenWomen.women" class="iranSansBold girl">
-              <span v-if="totalMenWomen.women">{{ totalMenWomen.women }}</span>
+            <span v-if="totalMenPercent" class="iranSansBold girl">
+              <span>{{ totalMenPercent }}</span>
               %
             </span>
             <span v-if="femaleCount" class="iranSansBold girl mr-1">
@@ -91,8 +91,8 @@ export default {
     overlay: true,
     menPercent: null,
     womenPercent: null,
-    maleCount: null,
-    femaleCount: null,
+    // maleCount: null,
+    // femaleCount: null,
     allDataTitle: [],
     minusData: null,
     allData: {
@@ -142,7 +142,7 @@ export default {
         names: ["ثبت نشده", "در حال تحصیل", "فارق التحصیل"],
         values: ["null", "1", "2"],
         icons: [
-           "mdi-alert-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
         ],
@@ -389,7 +389,7 @@ export default {
       HasDisabilityData: {
         dataModelName: "HasDisability",
         title: "دارای معلولیت",
-         names: ["ثبت نشده", "دارد", "ندارد"],
+        names: ["ثبت نشده", "دارد", "ندارد"],
         values: ["-1", "1", "0"],
         icons: ["mdi-alert-circle", "mdi-check-circle", "mdi-close-circle"],
       },
@@ -399,7 +399,7 @@ export default {
         names: ["ثبت نشده", "پایین", "متوسط", "بالا", "خیلی بالا"],
         values: ["null", "1", "2", "3", "4"],
         icons: [
-         "mdi-alert-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -420,7 +420,7 @@ export default {
         ],
         values: ["null", "1", "2", "3", "4", "5", "100"],
         icons: [
-         "mdi-alert-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -432,7 +432,7 @@ export default {
       HasAPrivateHouseData: {
         dataModelName: "HasAPrivateHouse",
         title: "منزل شخصی",
-         names: ["ثبت نشده", "دارد", "ندارد"],
+        names: ["ثبت نشده", "دارد", "ندارد"],
         values: ["-1", "1", "0"],
         icons: ["mdi-alert-circle", "mdi-check-circle", "mdi-close-circle"],
       },
@@ -454,7 +454,7 @@ export default {
         ],
         values: ["null", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
         icons: [
-         "mdi-alert-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -507,7 +507,7 @@ export default {
         ],
         values: ["null", "1", "2", "3", "4", "5"],
         icons: [
-         "mdi-alert-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -526,7 +526,7 @@ export default {
         ],
         values: ["null", "1", "2", "3"],
         icons: [
-         "mdi-alert-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -561,7 +561,7 @@ export default {
         ],
         values: ["null", "1", "2", "3", "4"],
         icons: [
-         "mdi-alert-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -588,8 +588,8 @@ export default {
       ReligionData: {
         dataModelName: "Religion",
         title: "دین/مذهب",
-        names: ["ثبت نشده","شیعه", "سنی", "مسیحی", "کلیمی", "زرتشتی", "سایر"],
-        values: ["null","1", "2", "3", "4", "5", "100"],
+        names: ["ثبت نشده", "شیعه", "سنی", "مسیحی", "کلیمی", "زرتشتی", "سایر"],
+        values: ["null", "1", "2", "3", "4", "5", "100"],
         icons: [
           "mdi-alert-circle",
           "mdi-numeric-1-circle",
@@ -633,12 +633,13 @@ export default {
     ///////////////////////////////////////////////////-----------------------------------------
   }),
   methods: {
-    setAllModelMethod(value) {
+    async setAllModelMethod(value) {
       // console.log("dataReceived", value);
       this.allDataModel[value.dataModelName] = value.value;
-      this.sendData();
-      this.setTitle();
-      this.setPercentDataName(value.dataModelName);
+      await this.sendData();
+      await this.setTitle();
+      await this.setPercentDataName(value.dataModelName);
+      // await this.totalMenWomen();
       // debounce( ()=> {
       //     console.log("debounce");
       //     mysend()
@@ -674,7 +675,7 @@ export default {
             //title[count].children.push(allData[`${k}Data`]["names"][index])
           });
           subtitle[count] = subTemp;
-          console.log("subTemp", subTemp);
+          // console.log("subTemp", subTemp);
           count++;
         }
       });
@@ -686,20 +687,31 @@ export default {
       };
     },
     setPercentDataName(dataName) {
-      console.log("setPercentDataName",dataName);
+      // console.log("setPercentDataName",dataName);
       this.$store.dispatch("app/setCurrentDataName", dataName);
     },
   },
-  mounted() {
-
-  },
+  mounted() {},
   computed: {
-
-    totalMenWomen() {
+    totalMenPercent() {
+      return this.$store.getters["app/getTotalMenPercent"];
+    },
+    totalWomenPercent() {
+      return this.$store.getters["app/getTotalWomenPercent"];
+    },
+    maleCount() {
+      return this.$store.getters["app/getMaleCount"];
+    },
+    femaleCount() {
+      return this.$store.getters["app/getFemaleCount"];
+    },
+    /*
+     totalMenWomen() {
       let data = this.$store.getters["app/getTotalMenWomen"];
+      // let data = this.$store.state["app/totalmen"];
       let womenPercent = 0;
       let menPercent = 0;
-      // console.log("---> data:",data)
+      console.log("---> data:", data);
       if (data) {
         menPercent =
           Math.round(
@@ -711,13 +723,17 @@ export default {
           ) / 100;
         this.maleCount = data.totalmen.maleCount;
         this.femaleCount = data.totalmen.feMaleCount;
+
         this.$store.dispatch("app/setNewPercent", {
           men: menPercent,
           women: womenPercent,
         });
       }
-
-      return { men: menPercent, women: womenPercent };
+      this.menPercent = menPercent;
+      this.womenPercent = womenPercent;
+      return true;
+      // this.maleP
+      //return { men: menPercent, women: womenPercent };
       // if (data != undefined) {
       //   console.log('getter',data)
       //   if (data.data != undefined) {
@@ -725,14 +741,15 @@ export default {
       //   }
       // }
     },
+    */
     myoverlay() {
       return this.$store.getters["app/getOverlay"];
     },
   },
   watch: {
-    allDataModel: function () {
-      //console.log("allDataModel", this.allDataModel);
-    },
+    // allDataModel: function () {
+    //   //console.log("allDataModel", this.allDataModel);
+    // },
   },
   components: {
     SelectorComponent,

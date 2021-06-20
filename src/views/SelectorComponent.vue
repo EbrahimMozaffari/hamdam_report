@@ -30,7 +30,7 @@
     </td>
     <td>
       <span class="percent" v-if="allDataModel[selectorData.dataModelName]">
-        <v-icon color="indigo">mdi-human-female</v-icon>
+        <v-icon  color="indigo">mdi-human-female</v-icon>
         <span v-if="femalePercent" class="iranSansBold girl"
           >{{ femalePercent }} %</span
         >
@@ -113,14 +113,14 @@ export default {
               this.selectorData.dataModelName
             ].data.factors.filter((el) => {
               if (el["value"] == element) {
-                console.log("el", el);
+                //console.log("el", el);
                 return el;
               } else if (element == "null") {
-                  console.log("element", element);
+                  //console.log("element", element);
                   return el["value"] == undefined;
               }
             });
-             console.log("newfilter", newfilter);
+             //console.log("newfilter", newfilter);
             totalSelectFemale += newfilter[0].femaleCount;
             totalSelectmale += newfilter[0].maleCount;
             totalfullcount = newfilter[0].totalFullCount;
@@ -156,7 +156,6 @@ export default {
           Math.round((data.newPercent.women - data.oldPercent.women) * 100) /
           100;
       }
-
       return {
         currentNewDataName: dataName.currentNewDataName,
         men: men,
