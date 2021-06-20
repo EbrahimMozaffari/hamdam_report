@@ -7,7 +7,7 @@ module.exports = {
     disableHostCheck:true,
     proxy: {
       "/api/*" : {
-        target:"https://stage.hamdamapi.ir",
+        target:"https://dev.hamdamapi.ir",
         secure:true,
         changeOrigin:true
       }
