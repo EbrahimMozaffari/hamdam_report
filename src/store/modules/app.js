@@ -141,7 +141,7 @@ export const actions = {
         .get(`/api/Panel/v1/Reporting/?${url}`)
         // .get(`https://hamdamapi.ir/api/Panel/v1/Reporting/?${url}`)
         .then((response) => {
-          // console.log("SUCCESS!!", response.data);
+           console.log("SUCCESS!!", response.data);
           return response.data;
         })
         .catch(function (error) {
@@ -209,7 +209,7 @@ export const actions = {
           return response.data;
         })
         .catch(function (error) {
-          console.log("FAILURE!!", error);
+         // console.log("FAILURE!!", error);
         });
       //console.log("dataaa", data);
       if (data) {
