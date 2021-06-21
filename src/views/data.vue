@@ -252,3 +252,31 @@
         Math.round(((totalJobStatus * 100) / totalSelect) * 100) / 100;
 
         */
+            // console.log(
+            //   "element",
+            //   element,
+            //   data[this.selectorData.dataModelName].data
+            // );
+            // data[this.selectorData.dataModelName].data.factors.forEach(el => {
+            //     console.log("el",el)
+            // });
+
+
+                      //   if (data[this.selectorData.dataModelName]) {
+          //     let newArray = data[this.selectorData.dataModelName].filter(
+          //       (el) => {
+          //         return el["value"] == dataValue;
+          //       }
+          //     );
+          //     console.log("newArray", newArray);
+          //   }
+
+          //   let newArray = data.filter((el) => {
+          //     return el[datahasSpecific] !== undefined;
+          //   });
+          //   console.log("HasSpecificDisease", newArray[0][datahasSpecific]);
+          //   totalHasSpecificDisease += newArray[0][datahasSpecific];
+
+                  // console.log("total selectmale", totalSelectmale);
+        // console.log(" totalSelectFemale", totalSelectFemale);
+        // console.log("total sum", totalSelectmale + totalSelectFemale);

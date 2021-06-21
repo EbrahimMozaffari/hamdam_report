@@ -1,47 +1,79 @@
 <template>
   <v-main class="backTexture">
     <v-overlay :absolute="absolute" :value="myoverlay"> </v-overlay>
-    <div class="mypositon col-2">
-      <v-card class="mx-auto mt-5 pa-0">
+    <div class="mypositon col-2" dir="rtl">
+      <v-card class="mx-auto pa-0">
         <v-app-bar dark color="indigo">
           <v-toolbar-title class="iranSansBold"> گزارش انتخابی</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-app-bar>
-        <v-container class="px-5 selector">
+        <v-container class="px-0 selector scrolable">
           <p>
             <v-icon color="indigo">mdi-human-male </v-icon>
 
-            <span  v-if="totalMenWomen.men">
-              <span>{{totalMenWomen.men}}</span>
+            <span v-if="totalMenPercent" class="iranSansBold boy">
+              <span>{{ totalMenPercent }}</span>
               %
             </span>
+            <span v-if="maleCount" class="iranSansBold boy mr-1">
+              {{ maleCount }} نفر</span
+            >
           </p>
           <p>
             <v-icon color="indigo">mdi-human-female</v-icon>
-            <span v-if="totalMenWomen.women">
-              <span v-if="totalMenWomen.women">{{totalMenWomen.women}}</span>
+            <span v-if="totalMenPercent" class="iranSansBold girl">
+              <span>{{ totalMenPercent }}</span>
               %
             </span>
+            <span v-if="femaleCount" class="iranSansBold girl mr-1">
+              {{ femaleCount }} نفر</span
+            >
           </p>
+          <div>
+            <!-- {{ allDataTitle }}  -->
+            <div
+              v-for="(item, index) in allDataTitle.title"
+              class="iranSansLight fontSize15"
+              :key="index"
+            >
+              <p class="light-blue lighten-4 pa-1 ma-0">{{ item }}</p>
+              <!-- <p>{{item.subtitle}}</p> -->
+              <div class="blue-grey lighten-5 pr-5">
+                <div
+                  class=""
+                  v-for="myitem in allDataTitle.subtitle[index]"
+                  :key="myitem"
+                >
+                  - {{ myitem }}
+                </div>
+              </div>
+            </div>
+          </div>
         </v-container>
       </v-card>
     </div>
-    <v-row dir="rtl" class="d-flex flex-row">
-      <v-card class="mx-auto mt-5 col-6 pa-0">
+    <v-row dir="rtl" class="d-flex flex-row pl-5 pb-5">
+      <div class="mt-5 col-2 pa-0"></div>
+      <v-card class="mt-5 col-10 pa-0">
         <v-app-bar dark color="indigo">
-          <v-toolbar-title class="iranSansBold"> داشبورد پیشرفته آمار و تحلیل اطلاعات </v-toolbar-title>
+          <v-toolbar-title class="iranSansBold">
+            داشبورد پیشرفته آمار و تحلیل اطلاعات
+          </v-toolbar-title>
 
           <v-spacer></v-spacer>
           <!-- <v-icon @click="$oidc.signOut()" color="red">mdi-exit-to-app</v-icon> -->
         </v-app-bar>
-        <v-container class="px-5 selector">
-          <SelectorComponent
-            v-for="(item, index) in allData"
-            :key="index"
-            class="mt-5"
-            :selectorData="item"
-            @over="setAllModelMethod"
-          />
+        <v-container class="px-0 selector">
+          <table class="col-12">
+            <SelectorComponent
+              v-for="(item, index) in allData"
+              :key="index"
+              class="mt-5"
+              :selectorData="item"
+              :minusData="minusData"
+              @over="setAllModelMethod"
+            />
+          </table>
         </v-container>
       </v-card>
     </v-row>
@@ -59,11 +91,16 @@ export default {
     overlay: true,
     menPercent: null,
     womenPercent: null,
+    // maleCount: null,
+    // femaleCount: null,
+    allDataTitle: [],
+    minusData: null,
     allData: {
       SeminaryEducationLevelData: {
         dataModelName: "SeminaryEducationLevel",
         title: "سطح تحصیلات حوزوی",
         names: [
+          "ثبت نشده",
           "ندارد",
           "مقدمات",
           "سطح یک",
@@ -72,8 +109,9 @@ export default {
           "سطح چهار",
           "خارج",
         ],
-        values: ["1", "2", "3", "4", "5", "6", "7"],
+        values: ["null", "1", "2", "3", "4", "5", "6", "7"],
         icons: [
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -86,22 +124,34 @@ export default {
       TurbanWearingStatusData: {
         dataModelName: "TurbanWearingStatus",
         title: "وضعیت معمم بودن",
-        names: ["معمم نیستم و قصد آن را ندارم", "معمم هستم یا خواهم شد"],
-        values: ["1", "2"],
-        icons: ["mdi-numeric-1-circle", "mdi-numeric-2-circle"],
+        names: [
+          "ثبت نشده",
+          "معمم نیستم و قصد آن را ندارم",
+          "معمم هستم یا خواهم شد",
+        ],
+        values: ["null", "1", "2"],
+        icons: [
+          "mdi-alert-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+        ],
       },
       EducationStatusData: {
         dataModelName: "EducationStatus",
         title: "وضعیت تحصیلی",
-        names: ["در حال تحصیل", "فارق التحصیل"],
-        values: ["1", "2"],
-        icons: ["mdi-numeric-1-circle", "mdi-numeric-2-circle"],
+        names: ["ثبت نشده", "در حال تحصیل", "فارق التحصیل"],
+        values: ["null", "1", "2"],
+        icons: [
+          "mdi-alert-circle",
+          "mdi-numeric-1-circle",
+          "mdi-numeric-2-circle",
+        ],
       },
       EducationalStageData: {
         dataModelName: "EducationalStage",
         title: "میزان تحصیلات",
         names: [
-          "اهمیتی ندارد",
+          "ثبت نشده ",
           "ابتدایی",
           "راهنمایی",
           "دبیرستان",
@@ -114,9 +164,22 @@ export default {
           "دکتری",
           "فوق دکتری",
         ],
-        values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
+        values: [
+          "null",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+        ],
         icons: [
-          "mdi-minus-circle",
+          "mdi-alert-circle",
           "mdi-numeric-0-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
@@ -134,6 +197,7 @@ export default {
         dataModelName: "UniversityOrSchoolType",
         title: "نوع دانشگاه یا آموزشگاه",
         names: [
+          "ثبت نشده",
           "مدرسه دولتی",
           "مدرسه خصوصی",
           "دانشگاه دولتی",
@@ -145,8 +209,21 @@ export default {
           "دانشگاه فرهنگیان",
           "سایر",
         ],
-        values: ["1", "2", "10", "11", "12", "13", "14", "15", "16", "100"],
+        values: [
+          "null",
+          "1",
+          "2",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "100",
+        ],
         icons: [
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -162,10 +239,10 @@ export default {
       JobStatusData: {
         dataModelName: "JobStatus",
         title: "وضعیت شغلی",
-        names: ["اهمیتی ندارد", "بیکار", "خانه دار", "شاغل", "بازنشسته"],
-        values: ["0", "1", "2", "3", "4"],
+        names: ["ثبت نشده ", "بیکار", "خانه دار", "شاغل", "بازنشسته"],
+        values: ["null", "1", "2", "3", "4"],
         icons: [
-          "mdi-minus-circle",
+          "mdi-alert-circle",
           "mdi-close-circle",
           "mdi-home-circle",
           "mdi-account-hard-hat",
@@ -176,7 +253,7 @@ export default {
         dataModelName: "ContractType",
         title: "نوع قرارداد",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "رسمی",
           "قراردادی",
           "پیمانی",
@@ -185,9 +262,9 @@ export default {
           "پروژه ای",
           "سایر",
         ],
-        values: ["0", "1", "2", "3", "4", "5", "6", "100"],
+        values: ["null", "1", "2", "3", "4", "5", "6", "100"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -200,10 +277,10 @@ export default {
       SkinColorData: {
         dataModelName: "SkinColor",
         title: "رنگ پوست",
-        names: ["وارد نشده", "سفید", "گندمی", "سبزه", "سبزه تیره"],
-        values: ["0", "1", "2", "3", "4"],
+        names: ["ثبت نشده", "سفید", "گندمی", "سبزه", "سبزه تیره"],
+        values: ["null", "1", "2", "3", "4"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -212,9 +289,9 @@ export default {
       },
       EyeColorData: {
         dataModelName: "EyeColor",
-        title: "رنگ پوست",
+        title: "رنگ چشم",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "قهوه ای",
           "مشکلی",
           "آبی",
@@ -222,9 +299,9 @@ export default {
           "خاکستری",
           "عسلی",
         ],
-        values: ["0", "1", "2", "3", "4", "5", "6"],
+        values: ["null", "1", "2", "3", "4", "5", "6"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -236,22 +313,15 @@ export default {
       BodyWeightCategoryData: {
         dataModelName: "BodyWeightCategory",
         title: "تناسب اندام",
-        names: [
-          "اهمیتی ندارد",
-          "خیلی لاغر",
-          "لاغر",
-          "متناسب",
-          "چاق",
-          "خیلی چاق",
-        ],
-        values: ["0", "1", "2", "3", "4", "5"],
+        names: ["ثبت نشده ", "خیلی لاغر", "لاغر", "متناسب", "چاق", "خیلی چاق"],
+        values: ["null", "1", "2", "3", "4", "5"],
         icons: [
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
           "mdi-numeric-4-circle",
           "mdi-numeric-5-circle",
-          "mdi-numeric-6-circle",
         ],
       },
 
@@ -270,9 +340,9 @@ export default {
           "محلی",
           "سایر",
         ],
-        values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "100"],
+        values: ["null", "1", "2", "3", "4", "5", "6", "7", "8", "100"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -288,6 +358,7 @@ export default {
         dataModelName: "ConscriptionStatus",
         title: "وضعیت نظام وظیفه",
         names: [
+          "ثبت نشده",
           "مشمول هستم",
           "مشمول هستم و قصد خدمت ندارم",
           "مشمول نیستم",
@@ -296,8 +367,9 @@ export default {
           "معافیت دائم",
           "پایان خدمت",
         ],
-        values: ["1", "2", "3", "4", "5", "6", "7"],
+        values: ["null", "1", "2", "3", "4", "5", "6", "7"],
         icons: [
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -310,24 +382,24 @@ export default {
       HasSpecificDiseaseData: {
         dataModelName: "HasSpecificDisease",
         title: "بیماری خاص",
-        names: ["دارد", "ندارد", "ثبت نشده"],
-        values: ["1", "-1", "0"],
-        icons: ["mdi-check-circle", "mdi-close-circle", "mdi-minus-circle"],
+        names: ["ثبت نشده", "دارد", "ندارد"],
+        values: ["-1", "1", "0"],
+        icons: ["mdi-alert-circle", "mdi-check-circle", "mdi-close-circle"],
       },
       HasDisabilityData: {
         dataModelName: "HasDisability",
         title: "دارای معلولیت",
-        names: ["دارد", "ندارد", "وارد نشده"],
-        values: ["1", "-1", "0"],
-        icons: ["mdi-check-circle", "mdi-close-circle", "mdi-minus-circle"],
+        names: ["ثبت نشده", "دارد", "ندارد"],
+        values: ["-1", "1", "0"],
+        icons: ["mdi-alert-circle", "mdi-check-circle", "mdi-close-circle"],
       },
       SocioeconomicStatusData: {
         dataModelName: "SocioeconomicStatus",
         title: "وضعیت اقتصادی",
-        names: ["وارد نشده", "پایین", "متوسط", "بالا", "خیلی بالا"],
-        values: ["0", "1", "2", "3", "4"],
+        names: ["ثبت نشده", "پایین", "متوسط", "بالا", "خیلی بالا"],
+        values: ["null", "1", "2", "3", "4"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -338,7 +410,7 @@ export default {
         dataModelName: "HomeOwnershipStatus",
         title: "وضعیت محل سکونت",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "خانه شخصی",
           "آپارتمان شخصی",
           "خانه استیجاری",
@@ -346,9 +418,9 @@ export default {
           "خانه سازمانی",
           "سایر",
         ],
-        values: ["0", "1", "2", "3", "4", "5", "100"],
+        values: ["null", "1", "2", "3", "4", "5", "100"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -360,15 +432,15 @@ export default {
       HasAPrivateHouseData: {
         dataModelName: "HasAPrivateHouse",
         title: "منزل شخصی",
-        names: ["دارد", "ندارد", "وارد نشده"],
-        values: ["1", "-1", "0"],
-        icons: ["mdi-check-circle", "mdi-close-circle", "mdi-minus-circle"],
+        names: ["ثبت نشده", "دارد", "ندارد"],
+        values: ["-1", "1", "0"],
+        icons: ["mdi-alert-circle", "mdi-check-circle", "mdi-close-circle"],
       },
       IncomeLevelData: {
         dataModelName: "IncomeLevel",
         title: "سطح درآمد",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "در حال حاظر درآمدی ندارم",
           "کمتر از یک میلیون تومان",
           "بیش از یک میلیون تا دو میلیون تومان",
@@ -380,9 +452,9 @@ export default {
           "بیش از بیست و پنج میلیون تا پنجاه میلیون تومان",
           "بیش از پنجاه میلیون تومان",
         ],
-        values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+        values: ["null", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -399,7 +471,7 @@ export default {
         dataModelName: "WealthLevel",
         title: "پس انداز",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "در حال حاظر دارایی قابل ارائه ای ندارم",
           "صفر تا ده میلیون تومان",
           "بیش از ده میلیون تا پنجاه میلیون تومان",
@@ -409,8 +481,9 @@ export default {
           "بیش از یک میلیارد تا پنج میلیارد تومان",
           "بیش از پنج میلیارد تومان",
         ],
-        values: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+        values: ["null", "1", "2", "3", "4", "5", "6", "7", "8"],
         icons: [
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -419,24 +492,22 @@ export default {
           "mdi-numeric-6-circle",
           "mdi-numeric-7-circle",
           "mdi-numeric-8-circle",
-          "mdi-numeric-9-circle",
-          "mdi-numeric-10-circle",
         ],
       },
       ReligiousPracticeData: {
         dataModelName: "ReligiousPractice",
         title: "تقید مذهبی",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "بسیار مقید",
           "مقید و متعادل",
           "اکتفا به واجبات",
           "انجام پاره ای از واجبات",
           "چندان پایبند نیستم",
         ],
-        values: ["0", "1", "2", "3", "4", "5"],
+        values: ["null", "1", "2", "3", "4", "5"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -448,14 +519,14 @@ export default {
         dataModelName: "ListeningToMusicStatus",
         title: "اهل گوش دادنبه موسیقی",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "کاملا هست",
           "به هیچ عنوان نیست",
           "ممکن است گوش کند",
         ],
-        values: ["0", "1", "2", "3"],
+        values: ["null", "1", "2", "3"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -465,14 +536,14 @@ export default {
         dataModelName: "LivingAbroadTendency",
         title: "تمایل به زندگی خارج از کشور",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "کاملا متمایل هست",
           "به هیچ عنوان تمایل ندارد",
           "زندگی در ایران و خارج از ایران تفاوت ندارد",
         ],
-        values: ["0", "1", "2", "3"],
+        values: ["null", "1", "2", "3"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -482,15 +553,15 @@ export default {
         dataModelName: "MaritalStatus",
         title: "وضعیت تأهل",
         names: [
-          "وارد نشده",
+          "ثبت نشده",
           "مجرد",
           "نامزدی ناموفق",
           "طلاق گرفته",
           "همسر فوت شده",
         ],
-        values: ["0", "1", "2", "3"],
+        values: ["null", "1", "2", "3", "4"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -501,14 +572,14 @@ export default {
         dataModelName: "LivingTogetherDuration",
         title: "مدت زمان زندگی مشترک",
         names: [
-          "اهمیتی ندارد",
+          "ثبت نشده ",
           "کمتر از یک سال",
           "بیش از یک سال الی سه سال",
           "بیش از سه سال",
         ],
-        values: ["0", "1", "2", "3"],
+        values: ["null", "1", "2", "3"],
         icons: [
-          "mdi-numeric-0-circle",
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -517,9 +588,10 @@ export default {
       ReligionData: {
         dataModelName: "Religion",
         title: "دین/مذهب",
-        names: ["شیعه", "سنی", "مسیحی", "کلیمی", "زرتشتی", "سایر"],
-        values: ["1", "2", "3", "4", "5", "100"],
+        names: ["ثبت نشده", "شیعه", "سنی", "مسیحی", "کلیمی", "زرتشتی", "سایر"],
+        values: ["null", "1", "2", "3", "4", "5", "100"],
         icons: [
+          "mdi-alert-circle",
           "mdi-numeric-1-circle",
           "mdi-numeric-2-circle",
           "mdi-numeric-3-circle",
@@ -527,26 +599,8 @@ export default {
           "mdi-numeric-5-circle",
           "mdi-numeric-6-circle",
         ],
-        Valueh: [
-          "Shia",
-          "Sunni",
-          "Christian",
-          "Jewish",
-          "Zoroastrian",
-          "Other",
-        ],
       },
       //////////////////////////////////////////////////////#############################################
-
-      // JobStatusData: {
-      //   dataModelName: "JobStatus",
-      //   title: "",
-      //   names: [],
-      //   values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-      //   icons: [
-
-      //   ],
-      // },
     },
     allDataModel: {
       SeminaryEducationLevel: [],
@@ -579,10 +633,13 @@ export default {
     ///////////////////////////////////////////////////-----------------------------------------
   }),
   methods: {
-    setAllModelMethod(value) {
+    async setAllModelMethod(value) {
       // console.log("dataReceived", value);
       this.allDataModel[value.dataModelName] = value.value;
-      this.sendData();
+      await this.sendData();
+      await this.setTitle();
+      await this.setPercentDataName(value.dataModelName);
+      // await this.totalMenWomen();
       // debounce( ()=> {
       //     console.log("debounce");
       //     mysend()
@@ -592,46 +649,91 @@ export default {
       //   }
     },
     sendData() {
-      console.log(" this.allDataModel", this.allDataModel);
-      //dispatch sendData
       this.$store.dispatch("app/sendDataReport", this.allDataModel);
     },
-  },
-  mounted() {
-    // HAD TO ADD THIS CODE FOR IT TO WORK
-    //let data = this.$store.state.app.hamdamData;
-    //console.log("HamdamData", data.male);
-    //this.$store.dispatch("app/fetchHamdamData");
-    // if (data.length == 0) {
-    //   this.$store.dispatch("app/fetchHamdamData");
-    // }
-  },
-  computed: {
-    hamdamData() {
-      let data = this.$store.getters["app/getHamdamData"];
-      console.log("data", data);
-      return data;
+    setTitle() {
+      let allDataModel = this.allDataModel;
+      let title = this.allDataTitle;
+      let allData = this.allData;
+      let count = 0;
+      let subtitle = [];
+      title = [];
+      Object.keys(allDataModel).forEach(function (k) {
+        if (allDataModel[k].length) {
+          //console.log(k + " - " + allDataModel[k]);
+          title[count] = allData[`${k}Data`]["title"];
+          let subTemp = [];
+          allDataModel[k].forEach((element) => {
+            let index = null;
+
+            index = allData[`${k}Data`]["values"].findIndex(
+              (values) => values == element
+            );
+            subTemp.push(allData[`${k}Data`]["names"][index]);
+            //subtitle[count].push(allData[`${k}Data`]["names"][index]);
+            //console.log("valuesTitle", allData[`${k}Data`]["names"][index]);
+            //title[count].children.push(allData[`${k}Data`]["names"][index])
+          });
+          subtitle[count] = subTemp;
+          // console.log("subTemp", subTemp);
+          count++;
+        }
+      });
+      // this.allDataModel.forEach(element => {
+
+      this.allDataTitle = {
+        title: title,
+        subtitle: subtitle,
+      };
     },
-    totalMenWomen() {
+    setPercentDataName(dataName) {
+      // console.log("setPercentDataName",dataName);
+      this.$store.dispatch("app/setCurrentDataName", dataName);
+    },
+  },
+  mounted() {},
+  computed: {
+    totalMenPercent() {
+      return this.$store.getters["app/getTotalMenPercent"];
+    },
+    totalWomenPercent() {
+      return this.$store.getters["app/getTotalWomenPercent"];
+    },
+    maleCount() {
+      return this.$store.getters["app/getMaleCount"];
+    },
+    femaleCount() {
+      return this.$store.getters["app/getFemaleCount"];
+    },
+    /*
+     totalMenWomen() {
       let data = this.$store.getters["app/getTotalMenWomen"];
-      let womenPercent=0;
-      let menPercent=0 ;
-      if(data){
-         menPercent =
-        Math.round(
-          ((data.totalmen.maleCount * 100) /
-            data.totalmen.totalFullCount) *
-            100
-        ) / 100;
-       womenPercent =
-        Math.round(
-          ((data.totalmen.feMaleCount * 100) /
-            data.totalmen.totalFullCount) *
-            100
-        ) / 100;
+      // let data = this.$store.state["app/totalmen"];
+      let womenPercent = 0;
+      let menPercent = 0;
+      console.log("---> data:", data);
+      if (data) {
+        menPercent =
+          Math.round(
+            ((data.totalmen.maleCount * 100) / data.totalmen.totalCount) * 100
+          ) / 100;
+        womenPercent =
+          Math.round(
+            ((data.totalmen.feMaleCount * 100) / data.totalmen.totalCount) * 100
+          ) / 100;
+        this.maleCount = data.totalmen.maleCount;
+        this.femaleCount = data.totalmen.feMaleCount;
+
+        this.$store.dispatch("app/setNewPercent", {
+          men: menPercent,
+          women: womenPercent,
+        });
       }
-      
-      return { men: menPercent,women:womenPercent };
+      this.menPercent = menPercent;
+      this.womenPercent = womenPercent;
+      return true;
+      // this.maleP
+      //return { men: menPercent, women: womenPercent };
       // if (data != undefined) {
       //   console.log('getter',data)
       //   if (data.data != undefined) {
@@ -639,14 +741,15 @@ export default {
       //   }
       // }
     },
+    */
     myoverlay() {
       return this.$store.getters["app/getOverlay"];
     },
   },
   watch: {
-    allDataModel: function () {
-      console.log("allDataModel", this.allDataModel);
-    },
+    // allDataModel: function () {
+    //   //console.log("allDataModel", this.allDataModel);
+    // },
   },
   components: {
     SelectorComponent,
@@ -672,21 +775,35 @@ export default {
 }
 .selector label {
   cursor: pointer;
+  font-size: 15px;
 }
+
 .selector .percent {
   line-height: 2;
   margin-right: 10px;
 }
 .mypositon {
+  top: 0;
+  right: 0;
+  bottom: 0;
   position: fixed;
-  top: 15px;
-  right: 15px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+// .scrolable{
+
+// }
+.reportTitle {
+  background: #bbffda;
+  padding: 3px;
+}
+.fontSize15 {
+  font-size: 15px;
 }
 @media screen and (max-width: 991px) {
   .mypositon {
-    position: fixed;
-    top: 5px;
-    right: 5px;
+    top: 0;
+    right: 0;
   }
 }
 //  @import '~pretty-checkbox/src/pretty-checkbox.scss';

@@ -42,6 +42,7 @@
 
 <script>
 //import HelloWorld from "./components/HelloWorld";
+import mainAuth from "./plugins/auth";
 
 export default {
   name: "App",
@@ -49,6 +50,11 @@ export default {
   data: () => ({
     //
   }),
+  computed: {
+    is_login(){
+      console.log("mainAuth.isAuthenticated",mainAuth.isAuthenticated)
+    }
+  },
 };
 </script>
 <style lang="scss">
