@@ -4,7 +4,9 @@
     <div class="mypositon col-2" dir="rtl">
       <v-card class="mx-auto pa-0">
         <v-app-bar dark color="indigo">
-          <v-toolbar-title class="iranSansBold"> گزارش انتخابی</v-toolbar-title>
+          <v-toolbar-title class="iranSansBold"> گزارش انتخابی
+           <!-- <a href="#" @click="reset">reset</a> -->
+          </v-toolbar-title>
           <v-spacer></v-spacer>
         </v-app-bar>
         <v-container class="px-0 selector scrolable">
@@ -650,6 +652,9 @@ export default {
     },
     sendData() {
       this.$store.dispatch("app/sendDataReport", this.allDataModel);
+    },
+    reset() {
+      this.$store.dispatch("app/resetState");
     },
     setTitle() {
       let allDataModel = this.allDataModel;

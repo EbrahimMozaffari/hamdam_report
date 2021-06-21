@@ -49,7 +49,13 @@ export default {
 
   data: () => ({
     //
+    isAuthenticated:mainAuth.isAuthenticated,
   }),
+  watch:{
+    isAuthenticated:function(val, oldVal) {
+      console.log('new: %s, old: %s', val, oldVal)
+    }
+  },
   computed: {
     is_login(){
       console.log("mainAuth.isAuthenticated",mainAuth.isAuthenticated)

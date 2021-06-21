@@ -46,7 +46,10 @@
           <v-sheet
             v-if="minusePercent.women"
             :class="minusePercent.women > 0 ? 'green' : 'red'"
-            class="rounded-circle mt-1"
+            class="rounded-circle mt-1 fontSmall iranSansLight"
+            align="center"
+            
+            justify="center"
             elevation="2"
             :height="
               minusePercent.women > 0
@@ -58,7 +61,8 @@
                 ? minusePercent.women
                 : -minusePercent.women
             "
-          ></v-sheet>
+            >{{ minusePercent.women > 9 ? Math.round(minusePercent.women) : '' }}</v-sheet
+          >
         </span>
         <v-icon color="indigo">mdi-human-male </v-icon>
         <span v-if="malePercent" class="iranSansBold boy"
@@ -73,7 +77,9 @@
           <v-sheet
             v-if="minusePercent.men"
             :class="minusePercent.men > 0 ? 'green' : 'red'"
-            class="rounded-circle mt-1"
+            class="rounded-circle mt-1 fontSmall iranSansLight"
+            align="center"
+            justify="center"
             elevation="2"
             :height="
               minusePercent.men > 0 ? minusePercent.men : -minusePercent.men
@@ -81,7 +87,8 @@
             :width="
               minusePercent.men > 0 ? minusePercent.men : -minusePercent.men
             "
-          ></v-sheet>
+            >{{ minusePercent.men > 9 ? Math.round(minusePercent.men) : '' }}</v-sheet
+          >
         </span>
       </span>
     </td>
@@ -231,5 +238,8 @@ export default {
 }
 .red {
   background-color: rgb(255, 0, 0);
+}
+.fontSmall{
+    font-size: 10px;
 }
 </style>

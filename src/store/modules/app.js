@@ -112,6 +112,9 @@ export const mutations = {
   SET_FEMALECOUNT(state, payload) {
     state.femaleCount = payload;
   },
+  RESET_STATE(state) {
+    Object.assign(state, getDefaultState())
+  }
 };
 
 export const actions = {
@@ -141,7 +144,7 @@ export const actions = {
         .get(`/api/Panel/v1/Reporting/?${url}`)
         // .get(`https://hamdamapi.ir/api/Panel/v1/Reporting/?${url}`)
         .then((response) => {
-          // console.log("SUCCESS!!", response.data);
+           console.log("SUCCESS!!", response.data);
           return response.data;
         })
         .catch(function (error) {
@@ -204,7 +207,7 @@ export const actions = {
         .get(`/api/Panel/v1/Reporting/Factors/?factor=${payload.dataModelName}`)
         // .get(`https://hamdamapi.ir/api/Panel/v1/Reporting/Factors/?factor=${payload.dataModelName}`)
         .then((response) => {
-          // console.log("SUCCESS!! single", response.data);
+           console.log("SUCCESS!! single", response.data);
 
           return response.data;
         })
@@ -233,5 +236,8 @@ export const actions = {
   async setCurrentDataName({ commit }, payload) {
     // console.log("SET_CURRENT_DATANAME");
     commit("SET_CURRENT_DATANAME", payload);
+  },
+  resetState({ commit }) {
+    commit('RESET_STATE');
   },
 };
