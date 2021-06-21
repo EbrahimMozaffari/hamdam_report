@@ -15,7 +15,7 @@
         </ul>
       </v-tooltip>
     </td>
-    <td class="d-flex">
+    <td class="d-inline-flex">
       <v-checkbox
         v-for="(item, index) in selectorData.names"
         :key="index"
@@ -29,32 +29,77 @@
       ></v-checkbox>
     </td>
     <td>
-      <span class="percent" v-if="allDataModel[selectorData.dataModelName]">
-        <v-icon  color="indigo">mdi-human-female</v-icon>
+      <span
+        class="d-inline-flex percent"
+        v-if="allDataModel[selectorData.dataModelName]"
+      >
+        <v-icon color="indigo">mdi-human-female</v-icon>
         <span v-if="femalePercent" class="iranSansBold girl"
           >{{ femalePercent }} %</span
         >
         <span v-if="femaleCount" class="iranSansBold girl mr-1">
-          {{ femaleCount }} نفر</span
+          {{ femaleCount }} نفر
+        </span>
+        <span
+          v-if="minusePercent.currentNewDataName == selectorData.dataModelName"
         >
-
+          <v-sheet
+            v-if="minusePercent.women"
+            :class="minusePercent.women > 0 ? 'green' : 'red'"
+            class="rounded-circle mt-1"
+            elevation="2"
+            :height="
+              minusePercent.women > 0
+                ? minusePercent.women
+                : -minusePercent.women
+            "
+            :width="
+              minusePercent.women > 0
+                ? minusePercent.women
+                : -minusePercent.women
+            "
+          ></v-sheet>
+        </span>
         <v-icon color="indigo">mdi-human-male </v-icon>
         <span v-if="malePercent" class="iranSansBold boy"
           >{{ malePercent }} %</span
         >
         <span v-if="maleCount" class="iranSansBold boy mr-1">
-          {{ maleCount }} نفر</span
+          {{ maleCount }} نفر
+        </span>
+        <span
+          v-if="minusePercent.currentNewDataName == selectorData.dataModelName"
         >
+          <v-sheet
+            v-if="minusePercent.men"
+            :class="minusePercent.men > 0 ? 'green' : 'red'"
+            class="rounded-circle mt-1"
+            elevation="2"
+            :height="
+              minusePercent.men > 0 ? minusePercent.men : -minusePercent.men
+            "
+            :width="
+              minusePercent.men > 0 ? minusePercent.men : -minusePercent.men
+            "
+          ></v-sheet>
+        </span>
       </span>
     </td>
-    <td v-if="minusePercent.currentNewDataName == selectorData.dataModelName">
-      <span v-if="minusePercent.men"
-        >{{ minusePercent.men }}
-        <!-- <span v-if="minusePercent.men>0" class="dot" :style="`height='${minusePercent.men}px';width='px'`"></span> --> </span
-      >_
+    <!-- <td v-if="minusePercent.currentNewDataName == selectorData.dataModelName">
+      <span v-if="minusePercent.men">
+  
+        <v-sheet
+          :class="minusePercent.men > 0 ? 'green' : 'red'"
+          class="rounded-circle"
+          elevation="2"
+          :height="minusePercent.men"
+          :width="minusePercent.men"
+        ></v-sheet>
+      </span>
+      _
       <span v-if="minusePercent.women">{{ minusePercent.women }}</span>
-      <!-- men{{Math.round(minusePercent.newPercent.men - minusePercent.oldPercent.men) }}- men{{Math.round(minusePercent.newPercent.women - minusePercent.oldPercent.women) }} -->
-    </td>
+     
+    </td> -->
   </tr>
 </template>
 
@@ -108,7 +153,6 @@ export default {
         this.dataModel.forEach((element) => {
           //let dataValue = element;
           if (data[this.selectorData.dataModelName]) {
-
             let newfilter = data[
               this.selectorData.dataModelName
             ].data.factors.filter((el) => {
@@ -116,19 +160,16 @@ export default {
                 //console.log("el", el);
                 return el;
               } else if (element == "null") {
-                  //console.log("element", element);
-                  return el["value"] == undefined;
+                //console.log("element", element);
+                return el["value"] == undefined;
               }
             });
-             //console.log("newfilter", newfilter);
+            //console.log("newfilter", newfilter);
             totalSelectFemale += newfilter[0].femaleCount;
             totalSelectmale += newfilter[0].maleCount;
             totalfullcount = newfilter[0].totalFullCount;
           }
-
-
         }); //end of HasSpecificDisease
-
 
         this.maleCount = totalSelectmale;
         this.femaleCount = totalSelectFemale;
@@ -183,10 +224,12 @@ export default {
   border-bottom: solid 1px lightgray;
 }
 .dot {
-  height: 25px;
-  width: 25px;
-  background-color: #bbb;
+  /* height: 25px;
+  width: 25px; */
   border-radius: 50%;
   display: inline-block;
+}
+.red {
+  background-color: rgb(255, 0, 0);
 }
 </style>
